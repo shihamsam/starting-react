@@ -8,6 +8,8 @@ import PokemonInfo from "./components/PokemonInfo";
 import PokemonTable from "./components/PokemonTable";
 import PokemonFilter from "./components/PokemonFilter";
 
+import PokemonContext from "./PokemonContext";
+
 const Title = styled.h1`
   text-align: center;
 `;
@@ -18,7 +20,7 @@ const TwoColumnLayout = styled.div`
   grid-column-gap: 1rem;
 `;
 
-const Container = styled.div`
+const PageContainer = styled.div`
   margin: auto;
   width: 800px;
   padding-top: 1rem;
@@ -36,18 +38,27 @@ function App() {
   }, []);
 
   return (
-    <Container>
-      <Title>Pokemon Search</Title>
-      <PokemonFilter filter={filter} filterSet={filterSet} />
-      <TwoColumnLayout>
-        <PokemonTable
-          pokemon={pokemon}
-          filter={filter}
-          selectedItemSet={selectedItemSet}
-        />
-        <PokemonInfo selectedItem={selectedItem} />
-      </TwoColumnLayout>
-    </Container>
+    <PokemonContext.Provider
+      value={{
+        filter,
+        filterSet,
+        selectedItem,
+        selectedItemSet,
+        pokemon,
+        pokemonSet,
+      }}
+    >
+      <PageContainer>
+        <Title>Pokemon Search</Title>
+        <PokemonFilter />
+        <TwoColumnLayout>
+          <div>
+            <PokemonTable />
+          </div>
+          <PokemonInfo />
+        </TwoColumnLayout>
+      </PageContainer>
+    </PokemonContext.Provider>
   );
 }
 
